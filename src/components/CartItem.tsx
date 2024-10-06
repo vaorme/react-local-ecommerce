@@ -55,7 +55,7 @@ function CartItem({cart, setCart, item} : any){
                     </div>
                     <div className="quantity">
                         <button onClick={() => minusQuantity(item.id)}>-</button>
-                        <input type="text" value={item.quantity} onChange={(e) => setItemQuantity(e.target.value)} />
+                        <input type="text" value={item.quantity} onChange={(e) => item.quantity = e.target.value} />
                         <button onClick={() => plusQuantity(item.id)}>+</button>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 function ProductItem({setRef, setCartIsOpen, cartIsOpen, products, cart, setCart, product} : any){
-	const addToCartRef = useRef(null);
+	const addToCartRef = useRef<HTMLButtonElement>(null);
     const getProduct = (id : number) =>{
 		const get = products.find((item : any) => item.id === id);
 		return get;

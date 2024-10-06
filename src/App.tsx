@@ -5,10 +5,7 @@ import ProductsList from './components/ProductsList';
 import { data } from './products.json';
 
 function App() {
-	const [products, setProducts] = useState(() =>{
-		const list = data;
-		return list;
-	})
+	const products = data;
 
 	const [cart, setCart] = useState(() =>{
 		const getData = localStorage.getItem('cart');
@@ -16,10 +13,6 @@ function App() {
 	})
 
 	const [cartIsOpen, setCartIsOpen] = useState(false);
-	const closeCart = () =>{
-        setCartIsOpen(false);
-    }
-
 	const addToCartRefs = useRef([]);
 
 	useEffect(() =>{

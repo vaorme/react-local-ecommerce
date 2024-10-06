@@ -4,10 +4,10 @@ import LogoSvg from '../assets/ecommerce-logo.svg';
 import { useEffect, useRef } from 'react';
 function Header({addToCartRefs, cartIsOpen, setCartIsOpen, cart, setCart} : any){
 
-    let cartBoxRef = useRef();
-    let cartButtonRef = useRef();
+    let cartBoxRef = useRef<HTMLDivElement>(null);
+    let cartButtonRef = useRef<HTMLDivElement>(null);
 
-    const checkRefs = (target, refs) => {
+    const checkRefs = (target: any, refs: any[]) => {
         for (const item of refs) {
             if (item.current && item.current.contains(target)) {
                 return false;
@@ -15,20 +15,21 @@ function Header({addToCartRefs, cartIsOpen, setCartIsOpen, cart, setCart} : any)
         }
         return true;
     }
-    
+
     useEffect(() => {
-        const handler = (e) => {
+        const handler = (e: Event) => {
+
             if (
-                !cartBoxRef.current?.contains(e.target) &&
+                !cartBoxRef.current?.contains(e.target as Node) &&
                 e.target !== cartButtonRef.current &&
                 checkRefs(e.target, addToCartRefs.current)
             ){
                 setCartIsOpen(false);
             }
         }
-    
+
         document.addEventListener('mousedown', handler);
-    
+
         return () => {
             document.removeEventListener('mousedown', handler);
         };
