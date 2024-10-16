@@ -1,46 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
-import './App.css';
-import Header from './components/Header';
-import ProductsList from './components/ProductsList';
-import { data } from './products.json';
-
+import { Routes, Route } from 'react-router-dom';
+import '@/App.css';
+import HomeView from '@/views/HomeView';
+import CheckoutView from './views/CheckoutView';
+import WebLayout from './layout/WebLayout';
+import { CartProvider } from '@/contexts/CartContext';
 function App() {
-	const products = data;
-
-	const [cart, setCart] = useState(() =>{
-		const getData = localStorage.getItem('cart');
-		return getData? JSON.parse(getData): [];
-	})
-
-	const [cartIsOpen, setCartIsOpen] = useState(false);
-	const addToCartRefs = useRef([]);
-
-	useEffect(() =>{
-		if (products && products.length > 0) {
-            localStorage.setItem('products', JSON.stringify(products));
-        }else{
-            localStorage.removeItem('products');
-        }
-	}, [products]);
-
-	useEffect(() =>{
-		if (cart && cart.length > 0) {
-            localStorage.setItem('cart', JSON.stringify(cart));
-        } else {
-            localStorage.removeItem('cart');
-        }
-	}, [cart]);
-
-	return (
-		<>
-			<Header addToCartRefs={addToCartRefs} cartIsOpen={cartIsOpen} setCartIsOpen={setCartIsOpen} cart={cart} setCart={setCart} />
-			<main id="main">
-				<div className="container">
-					<ProductsList cartIsOpen={cartIsOpen} addToCartRefs={addToCartRefs} setCartIsOpen={setCartIsOpen} products={products} cart={cart} setCart={setCart} />
-				</div>
-			</main>
-		</>
-	)
+	return (<CartProvider>
+		<Routes>
+			<Route path="/" element={<WebLayout/>}>
+				<Route index element={<HomeView />} />
+				<Route path="/checkout" element={<CheckoutView />} />
+			</Route>
+		</Routes>
+	</CartProvider>);
 }
 
 export default App

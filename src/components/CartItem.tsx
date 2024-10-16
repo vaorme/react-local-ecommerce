@@ -1,79 +1,40 @@
-function CartItem({cart, setCart, item} : any){
-    const removeitem = (id : number) =>{
-        const getOthers = cart.filter((item : any) => item.id !== id);
-        setCart(getOthers);
-    }
-	const existsInCart = (id : number) =>{
-		const get = cart.find((product : any) => product.id === id);
-		return get? true : false;
-	}
-	const minusQuantity = (id : any) =>{
-		if (existsInCart(id)) {
-			const updateCart = cart.reduce((acc: any[], product: any) => {
-				if (product.id === id) {
-					const newQuantity = product.quantity - 1;
-					if (newQuantity > 0) {
-						acc.push({ ...product, quantity: newQuantity });
-					}
-				} else {
-					acc.push(product);
-				}
-				return acc;
-			}, []);
+import { useCartContext } from "@/contexts/CartContext";
+import { formatPrice } from "@/lib/helpers";
+import { CartProductType } from "@/lib/types";
 
-			setCart(updateCart);
-		}
-	}
-	const plusQuantity = (id : any) =>{
-		if(existsInCart(id)){
-			const updateCart = cart.map((product : any) => {
-				const quantity = product.id === id? ++product.quantity : product.quantity;
-				return {
-					...product,
-					quantity
-				}
-			})
-			setCart(updateCart);
-		}
-	}
-
+export default function CartItem({ product } : CartProductType){
+	const { removeItem, minusQuantity, plusQuantity } = useCartContext();
     return <>
         <div className="item">
             <div className="col">
                 <div className="image">
-                    <img src={item.image} alt={item.name} />
+                    <img src={product.image} alt={product.name} />
                 </div>
                 <div className="info">
                     <div className="name">
-                        <h4>{item.name}</h4>
+                        <h4>{product.name}</h4>
                         <div className="price">
-                            {item.discount? (
-                                <span className="price-discount">${item.discounted_price}</span>
+                            {product.discount? (
+                                <span className="price-discount">${formatPrice(product.discounted_price)}</span>
                             ): ''}
-                            <span className="price-current">${item.price}</span>
+                            <span className="price-current">${formatPrice(product.price)}</span>
                         </div>
                     </div>
                     <div className="quantity">
-                        <button onClick={() => minusQuantity(item.id)}>-</button>
-                        <input type="text" value={item.quantity} onChange={(e) => item.quantity = e.target.value} />
-                        <button onClick={() => plusQuantity(item.id)}>+</button>
+                        <button onClick={() => minusQuantity(product.id)}>-</button>
+                        <input type="text" value={product.quantity} readOnly/>
+                        <button onClick={() => plusQuantity(product.id)}>+</button>
                     </div>
                 </div>
             </div>
             <div className="col actions">
-                <button onClick={() => removeitem(item.id)}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M4 7l16 0"></path>
-                        <path d="M10 11l0 6"></path>
-                        <path d="M14 11l0 6"></path>
-                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                    </svg>
+                <button onClick={() => removeItem(product.id)}>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="none">
+						<path fillRule="evenodd" clipRule="evenodd" d="M19.8841 4.11599C20.3722 4.60415 20.3722 5.39561 19.8841 5.88376L5.88407 19.8838C5.39591 20.3719 4.60445 20.3719 4.1163 19.8838C3.62814 19.3956 3.62814 18.6041 4.1163 18.116L18.1163 4.11599C18.6045 3.62784 19.3959 3.62784 19.8841 4.11599Z" fill="currentColor" />
+						<path fillRule="evenodd" clipRule="evenodd" d="M4.1163 4.11599C4.60445 3.62784 5.39591 3.62784 5.88407 4.11599L19.8841 18.116C20.3722 18.6041 20.3722 19.3956 19.8841 19.8838C19.3959 20.3719 18.6045 20.3719 18.1163 19.8838L4.1163 5.88376C3.62814 5.39561 3.62814 4.60415 4.1163 4.11599Z" fill="currentColor" />
+					</svg>
                 </button>
             </div>
         </div>
     </>
 }
-
-export default CartItem;

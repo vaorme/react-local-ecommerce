@@ -1,40 +1,11 @@
+import { useCartContext } from "@/contexts/CartContext";
+import { formatPrice } from "@/lib/helpers";
+import { ProductInterface } from "@/lib/types";
 import { useRef } from "react";
 
-function ProductItem({setRef, setCartIsOpen, cartIsOpen, products, cart, setCart, product} : any){
+function ProductItem({setRef, product} : { setRef: any, product: ProductInterface }){
 	const addToCartRef = useRef<HTMLButtonElement>(null);
-    const getProduct = (id : number) =>{
-		const get = products.find((item : any) => item.id === id);
-		return get;
-	}
-
-	const existsInCart = (id : number) =>{
-		const get = cart.find((product : any) => product.id === id);
-		return get? true : false;
-	}
-
-    const addToCart = (id : number) =>{
-		const product = getProduct(id);
-
-		if(!product){
-			alert('no se encontro producto');
-			return true;
-		}
-		if(existsInCart(id)){
-			const updateCart = cart.map((product : any) => ({
-				...product,
-				quantity: product.id === id? ++product.quantity : product.quantity
-			}))
-			setCart(updateCart);
-		}else{
-			const newData = {
-				...product,
-				quantity: 1
-			};
-
-			setCart([...cart, newData])
-		}
-		cartIsOpen?? setCartIsOpen(true);
-	}
+	const { addToCart } = useCartContext();
 
 	if (setRef) {
         setRef(addToCartRef);
@@ -50,11 +21,11 @@ function ProductItem({setRef, setCartIsOpen, cartIsOpen, products, cart, setCart
                 <p>{product.description}</p>
                 <div className="item-price">
                     {product.discount? (
-                        <span className="price-discount">${product.discounted_price}</span>
+                        <span className="price-discount">${formatPrice(product.discounted_price)}</span>
                     ): ''}
-                    <span className="price-current">${product.price}</span>
+                    <span className="price-current">${formatPrice(product.price)}</span>
                 </div>
-                <button className="btn item-add-to-cart" id={product.id} ref={addToCartRef} onClick={() => addToCart(product.id)}>Add To Cart</button>
+                <button className="btn item-add-to-cart" ref={addToCartRef} onClick={() => addToCart(product.id)}>Add To Cart</button>
             </div>
         </div>
     </>

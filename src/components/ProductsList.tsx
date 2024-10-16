@@ -1,14 +1,18 @@
-import ProductItem from "./ProductItem";
-function ProductsList({addToCartRefs, setCartIsOpen, products, cart, setCart} : any){
+import ProductItem from "@/components/ProductItem";
+import useProduct from "@/hooks/useProduct";
+import { ProductInterface } from "@/lib/types";
+function ProductsList({addToCartRefs} : any){
+	const { products } = useProduct();
     const setRef = (ref: object, index: number) => {
         addToCartRefs.current[index] = ref;
     };
+
     return <>
         <section className="section products">
-            {products.length > 0? products.map((product : any, index : any) =>(
-                <ProductItem setRef={(ref: any) => setRef(ref, index)} setCartIsOpen={setCartIsOpen} products={products} product={product} cart={cart} setCart={setCart} key={product.id}/>
+            {products.length > 0? products.map((product : ProductInterface, index : number) =>(
+                <ProductItem setRef={(ref: any) => setRef(ref, index)} product={product} key={product.id}/>
             )) : (
-                <div className="empty">¿Qué esperas para agregar uno?</div>
+                <div className="empty">Not products found.</div>
             )}
         </section>
     </>
