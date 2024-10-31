@@ -1,4 +1,4 @@
-import { useCartContext } from "@/contexts/CartContext";
+import { useCartContext } from "@/hooks/useCartContext";
 import { formatPrice } from "@/lib/helpers";
 import { CartProductType } from "@/lib/types";
 

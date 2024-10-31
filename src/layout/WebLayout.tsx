@@ -1,15 +1,15 @@
 import { Outlet } from "react-router-dom";
 import Header from '@/components/Header';
-import { useRef } from "react";
+import { Toaster } from "react-hot-toast";
 
 export default function WebLayout(){
-	const addToCartRefs = useRef([]);
 	return (<>
-		<Header addToCartRefs={addToCartRefs}/>
+		<Header/>
 		<main id="main">
 			<div className="container">
 				<Outlet/>
 			</div>
 		</main>
+		<Toaster />
 	</>)
 }

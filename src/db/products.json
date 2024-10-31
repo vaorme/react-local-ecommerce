@@ -6,7 +6,7 @@
             "name": "Product 1",
             "description": "This is the description for Product 1.",
             "rating": 4.5,
-            "amount": 100,
+            "amount": 10,
             "price": 29.99,
             "discount": false,
             "discounted_price": 0
@@ -17,7 +17,7 @@
             "name": "Product 2",
             "description": "Description for Product 2.",
             "rating": 3.8,
-            "amount": 75,
+            "amount": 2,
             "price": 49.99,
             "discount": true,
             "discounted_price": 39.99
@@ -28,7 +28,7 @@
             "name": "Product 3",
             "description": "Description for Product 3.",
             "rating": 4.0,
-            "amount": 120,
+            "amount": 4,
             "price": 19.99,
             "discount": false,
             "discounted_price": 0
@@ -39,7 +39,7 @@
             "name": "Product 4",
             "description": "This is the description for Product 4.",
             "rating": 4.8,
-            "amount": 90,
+            "amount": 7,
             "price": 39.99,
             "discount": true,
             "discounted_price": 29.99
@@ -61,7 +61,7 @@
             "name": "Product 6",
             "description": "Description for Product 6.",
             "rating": 4.2,
-            "amount": 110,
+            "amount": 9,
             "price": 24.99,
             "discount": true,
             "discounted_price": 19.99
@@ -72,7 +72,7 @@
             "name": "Product 7",
             "description": "This is the description for Product 7.",
             "rating": 4.7,
-            "amount": 85,
+            "amount": 3,
             "price": 34.99,
             "discount": false,
             "discounted_price": 0

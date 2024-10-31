@@ -1,9 +1,9 @@
 import CartItem from "@/components/CartItem";
-import { useCartContext } from "@/contexts/CartContext";
+import { useCartContext } from "@/hooks/useCartContext";
 import { CartItemInterface } from "@/lib/types";
 import { NavLink } from "react-router-dom";
-function CartBox({cartBoxRef} : any){
-	const { cart, isCartOpen, cartTotal, closeCart } = useCartContext();
+function CartBox(){
+	const { cartBoxRef, cart, isCartOpen, cartTotal, closeCart } = useCartContext();
 
     return <>
         <div className={`cart-box${isCartOpen? ' open' : ''}`} ref={cartBoxRef}>

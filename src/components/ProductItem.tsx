@@ -1,15 +1,33 @@
-import { useCartContext } from "@/contexts/CartContext";
+import { useCartContext } from "@/hooks/useCartContext";
 import { formatPrice } from "@/lib/helpers";
 import { ProductInterface } from "@/lib/types";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
-function ProductItem({setRef, product} : { setRef: any, product: ProductInterface }){
-	const addToCartRef = useRef<HTMLButtonElement>(null);
-	const { addToCart } = useCartContext();
+function ProductItem({ product} : { product: ProductInterface }){
+	const { addToCart, addToCartButtonsRefs } = useCartContext();
+	const buttonRef = useRef<HTMLButtonElement>(null);
 
-	if (setRef) {
-        setRef(addToCartRef);
-    }
+	useEffect(() => {
+		if(buttonRef.current){
+			addToCartButtonsRefs.current.push(buttonRef.current);
+		}
+
+		return () => {
+			if(buttonRef.current){
+				addToCartButtonsRefs.current = addToCartButtonsRefs.current.filter(ref => ref !== buttonRef.current);
+			}
+		}
+	}, [buttonRef, addToCartButtonsRefs])
+
+	const handleAddToCart = (id: number) =>{
+		addToCart(id);
+		// addToCartButtonsRefs.current.forEach(ref => {
+        //     if (ref) ref.innerText = 'Add To Cart';
+        // });
+        // if (buttonRef.current) {
+        //     buttonRef.current.innerText = 'Added to Cart';
+        // }
+	}
 
     return <>
         <div className="product-item">
@@ -25,7 +43,7 @@ function ProductItem({setRef, product} : { setRef: any, product: ProductInterfac
                     ): ''}
                     <span className="price-current">${formatPrice(product.price)}</span>
                 </div>
-                <button className="btn item-add-to-cart" ref={addToCartRef} onClick={() => addToCart(product.id)}>Add To Cart</button>
+                <button className="btn item-add-to-cart" onClick={() => handleAddToCart(product.id)} ref={buttonRef}>Add To Cart</button>
             </div>
         </div>
     </>

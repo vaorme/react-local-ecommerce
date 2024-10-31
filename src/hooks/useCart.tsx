@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import useProduct from "@/hooks/useProduct";
 import { formatPrice } from "@/lib/helpers";
 import { CartItemInterface } from "@/lib/types";
+import toast from "react-hot-toast";
 
 export default function useCart(){
 	const { getProduct } = useProduct();
 	const [isCartOpen, setIsCartOpen] = useState(false);
+	const [alertStock, setAlertStock] = useState<{ id?: number; stock?: number; title?: string }>({});
 	const [cart, setCart] = useState(() =>{
 		const getData = localStorage.getItem('cart');
 		return getData? JSON.parse(getData) : [];
@@ -19,15 +21,34 @@ export default function useCart(){
 	const addToCart = (id : number) =>{
 		const product = getProduct(id);
 		if(!product){
-			alert('no se encontro producto');
-			return true;
+			toast.error('Producto no encontrado', {
+				id: 'error-product',
+			})
+			return false;
 		}
+
 		setCart((prevCart: CartItemInterface[]) => {
 			if(isProductInCart(id)){
-				return prevCart.map((product : CartItemInterface) => ({
-					...product,
-					quantity: product.id === id? product.quantity++ : product.quantity
-				}))
+				return prevCart.map((product : CartItemInterface) =>{
+					if(product.id !== id){
+						return product;
+					}
+					const amount = product.amount;
+					let quantity = product.quantity + 1;
+					if(quantity > amount){
+						setAlertStock({
+							id: product.id,
+							stock: amount,
+							title: product.name
+						})
+						quantity = amount;
+					}
+
+					return {
+						...product,
+						quantity
+					}
+				});
 			}else{
 				return [...prevCart, {
 					...product,
@@ -35,7 +56,9 @@ export default function useCart(){
 				}];
 			}
 		})
-		setIsCartOpen(true);
+		if(!isCartOpen){
+			setIsCartOpen(true);
+		}
 	}
 
 	const removeItem = (id: number) =>{
@@ -63,7 +86,16 @@ export default function useCart(){
 	const plusQuantity = (id : number) =>{
 		if(isProductInCart(id)){
 			const updateCart = cart.map((product : CartItemInterface) => {
-				const quantity = product.id === id? ++product.quantity : product.quantity;
+				const amount = product.amount;
+				let quantity = product.id === id? ++product.quantity : product.quantity;
+				if(quantity > amount){
+					setAlertStock({
+						id: product.id,
+						stock: amount,
+						title: product.name
+					})
+					quantity = amount;
+				}
 				return {
 					...product,
 					quantity
@@ -88,6 +120,14 @@ export default function useCart(){
 		const total = formatPrice(getTotal);
 		setCartTotal(total);
 	}, [cart]);
+
+	useEffect(() => {
+		if (Object.keys(alertStock).length === 0) return;
+		toast.error(`No hay suficiente stock de ${alertStock.title}. Solo quedan ${alertStock.stock} unidades`, {
+			id: `error-stock-${alertStock.id}`,
+		});
+		setAlertStock({});
+	}, [alertStock]);
 	return {
 		cart,
 		setCart,
