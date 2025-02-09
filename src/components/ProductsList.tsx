@@ -2,7 +2,7 @@ import { LoaderIcon, ProductItem } from "@/components";
 import { useFetch } from "@/hooks";
 import { ProductInterface } from "@/lib/types";
 
-const url = "https://fakestoreapi.com/productss";
+const url = "https://fakestoreapi.com/products";
 
 function ProductsList() {
 	const { data, loading, error } = useFetch(url, {});
