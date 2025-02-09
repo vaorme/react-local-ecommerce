@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 
 export const useFetch = (url: string, config: object) => {
-	const [data, setData] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState({});
+	const [data, setData] = useState<[]>([]);
+	const [loading, setLoading] = useState<boolean>(true);
+	const [error, setError] = useState<{message: string}>({
+		message: '',
+	});
 	useEffect(() => {
 		const controller = new AbortController();
 		const fetchData = async () => {
@@ -16,7 +18,9 @@ export const useFetch = (url: string, config: object) => {
 				}
 			} catch (error) {
 				if (error instanceof Error && error.name !== 'AbortError') {
-					setError(error);
+					setError({
+						message: "An error occurred while fetching the data."
+					});
 					setLoading(false);
 				}
 			}

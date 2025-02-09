@@ -2,7 +2,7 @@ import { LoaderIcon, ProductItem } from "@/components";
 import { useFetch } from "@/hooks";
 import { ProductInterface } from "@/lib/types";
 
-const url = "https://fakestoreapi.com/products";
+const url = "https://fakestoreapi.com/productss";
 
 function ProductsList() {
 	const { data, loading, error } = useFetch(url, {});
@@ -12,7 +12,7 @@ function ProductsList() {
 				<LoaderIcon />
 			</div>
 		);
-	if (error) return <div className="message">{(error as Error).message}</div>;
+	if (error && error.message !== "") return <div className="message">{error.message}</div>;
 	return (
 		<section className="section products">
 			{data && data?.length > 0 ? (
