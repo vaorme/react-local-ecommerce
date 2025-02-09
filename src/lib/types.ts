@@ -10,6 +10,9 @@ export interface ProductInterface {
 	discount: boolean;
 	discounted_price: number;
 }
+export interface CartItemInterface extends ProductInterface {
+	quantity: number;
+}
 export type CartProductType = {
 	product: ProductInterface;
 };

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { formatPrice } from "@/lib/helpers";
 import { CartItemInterface, ProductInterface } from "@/lib/types";
 import toast from "react-hot-toast";
@@ -9,11 +9,6 @@ export default function useCart() {
 		return getData ? JSON.parse(getData) : [];
 	});
 	const [isCartOpen, setIsCartOpen] = useState(false);
-	const [alertStock, setAlertStock] = useState<{
-		id?: number;
-		stock?: number;
-		title?: string;
-	}>({});
 	const limitStockAlert = useRef(false);
 	const [cartTotal, setCartTotal] = useState("");
 
@@ -37,11 +32,6 @@ export default function useCart() {
 					const stock = item.stock;
 					let quantity = item.quantity + 1;
 					if (quantity > stock) {
-						// setAlertStock({
-						// 	id: item.id,
-						// 	stock: stock,
-						// 	title: item.title,
-						// });
 						limitStockAlert.current = true;
 						quantity = stock;
 					}
@@ -103,11 +93,6 @@ export default function useCart() {
 				let quantity =
 					product.id === id ? ++product.quantity : product.quantity;
 				if (quantity > amount) {
-					// setAlertStock({
-					// 	id: product.id,
-					// 	stock: amount,
-					// 	title: product.title,
-					// });
 					limitStockAlert.current = true;
 					quantity = amount;
 				}
@@ -151,19 +136,6 @@ export default function useCart() {
 			limitStockAlert.current = false;
 		}
 	}, [cart, limitStockAlert]);
-
-	// useEffect(() => {
-	// 	if (Object.keys(alertStock).length === 0) return;
-	// 	toast.error(
-	// 		`No hay suficiente stock de ${alertStock.title}. Solo quedan ${alertStock.stock} unidades`,
-	// 		{
-	// 			id: `error-stock-${alertStock.id}`,
-	// 		}
-	// 	);
-	// 	return () => {
-	// 		setAlertStock({});
-	// 	};
-	// }, [alertStock]);
 	return {
 		cart,
 		setCart,

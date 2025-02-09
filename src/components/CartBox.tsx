@@ -1,6 +1,6 @@
 import CartItem from "@/components/CartItem";
 import { useCartContext } from "@/hooks/useCartContext";
-import { CartItemInterface, ProductInterface } from "@/lib/types";
+import { ProductInterface } from "@/lib/types";
 import { NavLink } from "react-router-dom";
 function CartBox() {
 	const { cartBoxRef, cart, isCartOpen, cartTotal, closeCart } =

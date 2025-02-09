@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-export const useFetch = (url, config) => {
-	const [data, setData] = useState(null);
+export const useFetch = (url: string, config: object) => {
+	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
+	const [error, setError] = useState({});
 	useEffect(() => {
 		const controller = new AbortController();
 		const fetchData = async () => {
@@ -15,7 +15,7 @@ export const useFetch = (url, config) => {
 					setLoading(false);
 				}
 			} catch (error) {
-				if (error.name !== 'AbortError') {
+				if (error instanceof Error && error.name !== 'AbortError') {
 					setError(error);
 					setLoading(false);
 				}
