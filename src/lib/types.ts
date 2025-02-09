@@ -1,20 +1,18 @@
 export interface ProductInterface {
-	id: number,
-	image: string,
-	name: string,
-	description: string,
-	rating: number,
-	amount: number,
-	price: number,
-	discount: boolean,
-	discounted_price: number
-}
-export interface CartItemInterface extends ProductInterface{
-	quantity: number
+	id: number;
+	image: string;
+	title: string;
+	description: string;
+	rating: number;
+	stock: number;
+	quantity?: number;
+	price: number;
+	discount: boolean;
+	discounted_price: number;
 }
 export type CartProductType = {
-	product: CartItemInterface
-}
+	product: ProductInterface;
+};
 export type ProductType = {
-	product: ProductInterface
-}
+	product: ProductInterface;
+};
